@@ -1,14 +1,13 @@
 import os, time
-import argparse
 from datetime import datetime
 
 import torch
-
 from utils import callbacks, metrics_loader, general
 from data_loader.dataloader import data_split, get_data_loader
 from utils.general import (model_loader,  get_optimizer, get_loss_fn,\
     get_lr_scheduler, yaml_loader)
 
+import argparse
 import trainer
 import test as tester
 

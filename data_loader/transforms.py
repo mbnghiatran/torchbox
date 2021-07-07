@@ -2,6 +2,8 @@ import PIL, cv2
 import torch
 import numpy as np
 from torchvision import transforms
+import albumentations as albu
+
 # from imgaug import augmenters as iaa
 # import imgaug as ia
 
@@ -9,7 +11,8 @@ from torchvision import transforms
 train_transform = transforms.Compose(
     [
         transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
+        transforms.RandomHorizontalFlip(p=0.5),
+        transforms.ColorJitter(hue=.05, saturation=.05),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225])
@@ -23,6 +26,7 @@ val_transform = transforms.Compose(
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225])
     ])
+
 
 #Defince augmenter
 # class ImgAugTransform:
@@ -41,7 +45,8 @@ val_transform = transforms.Compose(
 #   def __call__(self, img):
 #     img = np.array(img)
 #     return self.aug.augment_image(img)
-#End
+
+
 # train_transform = transforms.Compose([
 #     ImgAugTransform(),
 #     lambda x: PIL.Image.fromarray(x),
@@ -49,17 +54,3 @@ val_transform = transforms.Compose(
 #     transforms.ToTensor(),
 #     transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
 # ])
-
-# from torchtoolbox.transform.cutout import Cutout_PIL as Cutout
-# define augmentation methods for training and validation/test set
-# train_transform = transforms.Compose(
-#     [
-#         transforms.Resize((240, 240)),
-#         transforms.RandomHorizontalFlip(p=0.5),
-#         transforms.ColorJitter(hue=.05, saturation=.05),
-#         transforms.RandomHorizontalFlip(),
-#         transforms.RandomRotation(90, resample=PIL.Image.BILINEAR),
-#         transforms.ToTensor(),
-#         transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
-#     ]
-# )
