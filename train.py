@@ -1,4 +1,4 @@
-import os, time
+import os, time, logging
 from datetime import datetime
 
 import torch
@@ -22,12 +22,12 @@ def main(cfg, model, log_dir, checkpoint=None,):
 
     # Checking cuda
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    logger.info("Using device: {} ".format(device))
+    logging.info("Using device: {} ".format(device))
 
     # Convert to suitable device
-    # logger.info(model)
+    # logging.info(model)
     model = model.to(device)
-    logger.info("Number parameters of model: {:,}".format(sum(p.numel() for p in model.parameters())))
+    logging.info("Number parameters of model: {:,}".format(sum(p.numel() for p in model.parameters())))
 
     # using parsed configurations to create a dataset
     # Create dataset
@@ -63,7 +63,7 @@ def main(cfg, model, log_dir, checkpoint=None,):
     early_stopping = callbacks.EarlyStopping(patience=early_patience, mode = save_mode, path = checkpoint_path)
     
     # training models
-    logger.info("--"*50)
+    logging.info("--"*50)
     num_epochs = int(cfg["train"]["num_epochs"])
     t0 = time.time()
     for epoch in range(num_epochs):
@@ -85,9 +85,9 @@ def main(cfg, model, log_dir, checkpoint=None,):
         scheduler.step(val_loss)
 
         ## log to file 
-        logger.info("\n------Epoch {} / {}, Training time: {:.4f} seconds------".format(epoch, num_epochs, (time.time() - t1)))
-        logger.info(f"Training loss: {train_loss} \n Training metrics: {train_result}")
-        logger.info(f"Validation loss: {val_loss} \n Validation metrics: {val_result}")
+        logging.info("\n------Epoch {} / {}, Training time: {:.4f} seconds------".format(epoch, num_epochs, (time.time() - t1)))
+        logging.info(f"Training loss: {train_loss} \n Training metrics: {train_result}")
+        logging.info(f"Validation loss: {val_loss} \n Validation metrics: {val_result}")
         
         ## tensorboard writer
         tb_writer.add_scalar("Training Loss", train_loss, epoch)
@@ -109,7 +109,7 @@ def main(cfg, model, log_dir, checkpoint=None,):
         else:
             early_stopping(val_acc, train_checkpoint)
         if early_stopping.early_stop:
-            logger.info("Early Stopping!!!")
+            logging.info("Early Stopping!!!")
             break
 
     # testing on test set
@@ -123,8 +123,8 @@ def main(cfg, model, log_dir, checkpoint=None,):
 
     # logging report
     report = tester.test_result(test_model, test_loader, device, cfg)
-    logger.info(f"\nClassification Report: \n {report}")
-    logger.info("Completed in {:.3f} seconds. ".format(time.time() - t0))
+    logging.info(f"\nClassification Report: \n {report}")
+    logging.info("Completed in {:.3f} seconds. ".format(time.time() - t0))
 
     print(f"Classification Report: \n {report}")
     print("Completed in {:.3f} seconds.".format(time.time() - t0))
@@ -153,10 +153,10 @@ if __name__ == "__main__":
 
     ## create logger
     tb_writer = general.make_writer(log_dir = log_dir)
-    logger = general.log_initilize(os.path.join(log_dir, "model_logs.txt"))
-    logger.info(f"Start Tensorboard with tensorboard --logdir {log_dir}, view at http://localhost:6006/")
-    logger.info(f"Project name: {project_name}")
-    logger.info(f"CONFIGS: \n {config}")
+    text_logger = general.log_initilize(log_dir)
+    logging.info(f"Start Tensorboard with tensorboard --logdir {log_dir}, view at http://localhost:6006/")
+    logging.info(f"Project name: {project_name}")
+    logging.info(f"CONFIGS: \n {config}")
     
     ## Create model
     cls_model = model_loader(config)
