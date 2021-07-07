@@ -11,8 +11,7 @@ data : {
   validation_ratio: 0,
   validation_csv_name : ./dataset/test.csv,
   test_csv_name: ./dataset/test.csv,
-  # fold_list: ["fold0", "fold1", "fold2", "fold3", "fold4"],
-  label_dict: ["cat","dog"], # sort by class_id
+  label_dict: ["cat", "dog"], # sort by class_id
   batch_size: 4,
 }
 

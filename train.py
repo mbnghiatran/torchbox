@@ -19,7 +19,7 @@ def main(cfg, model, log_dir, checkpoint=None,):
         checkpoint = torch.load(checkpoint)
         model.load_state_dict(checkpoint['state_dict'])
         print("...Checkpoint loaded")
-        
+
     # Checking cuda
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logger.info("Using device: {} ".format(device))
