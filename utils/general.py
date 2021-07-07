@@ -85,6 +85,7 @@ def yaml_loader(yaml_file):
     return config
 
 def log_initilize(log_dir):
+    os.makedirs(log_dir, exist_ok=True)
     log_file = os.path.join(log_dir, "model_logs.txt")
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
