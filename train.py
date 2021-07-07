@@ -26,7 +26,7 @@ def main(cfg, model, log_dir, checkpoint=None,):
     logger.info("Using device: {} ".format(device))
 
     # Convert to suitable device
-    # logger.info(cls_model)
+    # logger.info(model)
     model = model.to(device)
     logger.info("Number parameters of model: {:,}".format(sum(p.numel() for p in model.parameters())))
 
