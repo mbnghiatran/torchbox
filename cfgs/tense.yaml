@@ -1,0 +1,53 @@
+session: {
+  neptune_project: demo-torchbox,
+  _comment_: exp1,
+  save_path: ./logs,
+  project_name : dog_cat_classify,
+}
+
+data : {
+  data.class: data_loader.Classify.ClassificationDataset,
+  data_csv_name: ./dataset/train.csv,
+  validation_ratio: 0,
+  validation_csv_name : ./dataset/test.csv,
+  test_csv_name: ./dataset/test.csv,
+  # fold_list: ["fold0", "fold1", "fold2", "fold3", "fold4"],
+  label_dict: ["cat","dog"], # sort by class_id
+  batch_size: 4,
+}
+
+model: {
+  model.class: models.resnet_transfer.resnet.ResNet_transfer,
+  model_name: resnet50,
+  num_class: 2,
+  pretrained: true,
+}
+
+# configure arguments of torch.optim.Optimizer
+# You can add other arguments for the Optimizer
+# Do not modify this key (eg. "name": SGD)
+optimizer: {
+  name: Adam,
+  lr: 1e-3,
+}
+
+# configure arguments of torch.optim.lr_scheduler 
+# feel free to add other arguments for the sheduler
+# Do not modify this key (eg. "name": CosineAnnealingLR)
+scheduler: {
+  name: ReduceLROnPlateau,
+  min_lr: 1e-5,
+  mode: min,
+  patience: 3,
+  factor: 0.1,
+}
+
+# Support TorchMetrics or custom metric(later)
+train: {
+  num_epochs: 5,
+  loss: CrossEntropyLoss,
+  metrics: ["accuracy_score"],
+  # EarlyStopping
+  patience: 5,
+  mode: min,
+}

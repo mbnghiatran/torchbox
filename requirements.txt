@@ -1,0 +1,17 @@
+numpy
+pyyaml
+pandas
+barbar
+matplotlib
+opencv-python
+Pillow==8.2.0
+scikit-learn
+neptune-client
+torch==1.7.1
+torchvision==0.8.2
+torchaudio==0.7.2
+torchsummary
+pretrainedmodels
+efficientnet_pytorch
+tensorboard
+albumentations
