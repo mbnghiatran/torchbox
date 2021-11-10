@@ -62,7 +62,7 @@ def load_resnet(name, num_class = 2, pretrained = True):
     print(f'Loading: {name}. Using pretrained: {pretrained}')
     model = getattr(models, name)(pretrained=pretrained)
     for param in model.parameters():
-        param.requires_grad = False
+        param.requires_grad = True
         
     fc_layer = nn.Sequential()
     fc_layer.add_module('fc_1', nn.Linear(model.fc.in_features, model.fc.in_features, bias = True))
